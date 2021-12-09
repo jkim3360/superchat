@@ -23,9 +23,9 @@ firebase.initializeApp({
 const auth = firebase.auth()
 const firestore = firebase.firestore()
 
-function App() {
+ function App() {
   const [user] = useAuthState(auth)
-
+  
   return (
     <div className='App'>
       <header>
@@ -69,10 +69,17 @@ function SignOut() {
 function ChatRoom() {
   const dummy = useRef()
   const messagesRef = firestore.collection('messages')
-  const query = messagesRef.orderBy('createdAt').limit(25)
+  const roomsRef =  firestore.collection('rooms')
+  const messagesQuery = messagesRef.orderBy('createdAt').limit(25)
+  const roomsQuery = roomsRef.orderBy('createdAt').limit(25)
+  
+  const [rooms] = useCollectionData(roomsQuery, { idField: 'id' })
+  const [messages] = useCollectionData(messagesQuery, { idField: 'id' })
 
-  const [messages] = useCollectionData(query, { idField: 'id' })
+  let currentRoom = roomsRef.get().then(doc =>  doc.docs[0].data().messages).then(collection => collection)
+  console.log(messages, currentRoom)
 
+ 
   const [formValue, setFormValue] = useState('')
 
   const sendMessage = async e => {
