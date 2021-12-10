@@ -22,17 +22,19 @@ firebase.initializeApp({
 
 const auth = firebase.auth()
 const firestore = firebase.firestore()
+var globalRoom
 
 function App() {
   const [user] = useAuthState(auth)
 
   return (
     <div className='App'>
-      <header>
+      {/* <header>
         <h1>Chat</h1>
         <SignOut />
-      </header>
+      </header> */}
 
+      <Dashboard />
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
   )
@@ -66,13 +68,49 @@ function SignOut() {
   )
 }
 
+function Dashboard() {
+  const roomsRef = firestore.collection('rooms')
+  const [rooms] = useCollectionData(roomsRef, { idField: 'id' })
+  const [currentRoom, setRoomId] = useState('Ij7qZG4ZOGY8QTboDX2O');
+  globalRoom = currentRoom
+
+  console.log(rooms)
+  return (
+    <>
+      {rooms &&
+        rooms.map(room => {
+          return room.id
+        })}
+      <button
+        value='create room'
+        onClick={() => {
+          const docRef = roomsRef.doc()
+          const docRef2 = roomsRef.doc()
+          const roomId = docRef.id
+          const msgId = docRef2.id
+          setRoomId(roomId)
+          // create a room document, a message collection in the room and a message 
+          roomsRef.doc(roomId).collection('messages').doc(msgId).set({
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            text: ''
+          })
+        }}
+      ></button>
+    </>
+  )
+}
+
 function ChatRoom() {
   const dummy = useRef()
-  const messagesRef = firestore.collection('messages')
-  const messagesQuery = messagesRef.orderBy('createdAt').limit(25)
+  const roomsRef = firestore
+    .collection('rooms')
+    .doc('xUnttl9tm1BDNGMa6H5B'
+      //  || 'Ij7qZG4ZOGY8QTboDX2O'
+       )
+    .collection('messages')
+  const roomsQuery = roomsRef.orderBy('createdAt').limit(25)
 
-  const [messages] = useCollectionData(messagesQuery, { idField: 'id' })
-  // const roomsRef = firestore.collection('rooms').doc('Ij7qZG4ZOGY8QTboDX2O').collection('messages')
+  const [messages] = useCollectionData(roomsQuery, { idField: 'id' })
 
   const [formValue, setFormValue] = useState('')
 
@@ -81,18 +119,10 @@ function ChatRoom() {
 
     const { uid, photoURL } = auth.currentUser
 
-    // 
-    // await roomsRef.add({
-    //   text: formValue,
-    //   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    //   uid,
-    // })
-
-    await messagesRef.add({
+    await roomsRef.add({
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid,
-      photoURL
+      uid
     })
 
     setFormValue('')
