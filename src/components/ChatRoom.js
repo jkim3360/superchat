@@ -15,6 +15,7 @@ export default function ChatRoom() {
   const [rooms] = useCollectionData(roomsCollection.orderBy('createdAt'), {
     idField: 'id'
   })
+  console.log(rooms)
   const mostRecentRoom = rooms && rooms[rooms.length - 1].id
   console.log(mostRecentRoom)
   //   get all users in room
@@ -61,7 +62,7 @@ export default function ChatRoom() {
         <input
           value={formValue}
           onChange={e => setFormValue(e.target.value)}
-          placeholder='say something nice'
+          placeholder='New Message'
         />
 
         <button type='submit' disabled={!formValue}>
