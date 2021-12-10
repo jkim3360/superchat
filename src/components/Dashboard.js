@@ -18,15 +18,17 @@ export default function Dashboard() {
         })}
       <button
         value='create room'
-        onClick={() => {
-          const docRef = roomsRef.doc()
-          const docRef2 = roomsRef.doc()
+        onClick={async () => {
+          const docRef = await roomsRef.add({
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          })
+          const docRef2 = await roomsRef.doc()
           const roomId = docRef.id
           const msgId = docRef2.id
           //   setRoomId(roomId)
 
           // create a users collection and store users
-          roomsRef.doc(roomId).collection('users').doc(user.uid).set({
+          await roomsRef.doc(roomId).collection('users').doc(user.uid).set({
             user: user.uid,
             email: user.email,
             name: user.displayName,
@@ -34,9 +36,8 @@ export default function Dashboard() {
           })
 
           // create a room document, a message collection in the room and a message
-          roomsRef.doc(roomId).collection('messages').doc(msgId).set({
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            text: ''
+          await roomsRef.doc(roomId).collection('messages').doc(msgId).set({
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
           })
         }}
       ></button>
