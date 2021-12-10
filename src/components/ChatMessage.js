@@ -14,7 +14,7 @@ export default function ChatMessage(props) {
             photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'
           }
         />
-        <p>{text}</p>
+        {text && (<p>{text}</p>)}
       </div>
     </>
   )
