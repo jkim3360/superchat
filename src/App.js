@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import SignIn from './components/SignIn'
 import SignOut from './components/SignOut'
 import Dashboard from './components/Dashboard'
@@ -10,6 +11,7 @@ import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
 
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 firebase.initializeApp({
   apiKey: 'AIzaSyDzfXBtXZoFOJu8tJIia0dWrMnQSjs3Zhg',
@@ -24,7 +26,29 @@ firebase.initializeApp({
 const auth = firebase.auth()
 
 function App() {
+  const firestore = firebase.firestore()
   const [user] = useAuthState(auth)
+  const usersRef = firestore.collection('users')
+  console.log(user)
+
+  const [users] = useCollectionData(usersRef, { idField: 'id' })
+  console.log('users: ', users)
+  // user?
+  const addUser = async () => {
+    try {
+      const newUser = await usersRef.doc(user && user.uid).set({
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        user: user && user.uid
+      })
+      return newUser
+    } catch (error) {
+      console.error('User is not defined')
+    }
+  }
+
+  useEffect(() => {
+    addUser()
+  }, [])
 
   return (
     <div className='App'>
@@ -33,7 +57,7 @@ function App() {
         <SignOut />
       </header>
 
-      <Dashboard />
+      {/* <Dashboard /> */}
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
   )
