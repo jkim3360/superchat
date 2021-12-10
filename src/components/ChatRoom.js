@@ -5,39 +5,33 @@ import ChatMessage from './ChatMessage'
 import firebase from 'firebase/compat/app'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
-export default function ChatRoom({ rooms }) {
+export default function ChatRoom() {
   const firestore = firebase.firestore()
   const auth = firebase.auth()
-  const dummy = useRef()
-  const roomsCollection = firestore.collection('rooms')
   const { uid, photoURL } = auth.currentUser
-
-
-
-  let roomIds = useCollectionData(roomsCollection, { idField: 'id' })[0]
-
-console.log(roomIds)
-
-//   get all users in room
+  const roomsCollection = firestore.collection('rooms')
+  const dummy = useRef()
+  //   sort by most recent being last
+  const [rooms] = useCollectionData(roomsCollection.orderBy('createdAt'), {
+    idField: 'id'
+  })
+  const mostRecentRoom = rooms && rooms[rooms.length - 1].id
+  console.log(mostRecentRoom)
+  //   get all users in room
   const [users] = useCollectionData(
-    roomsCollection.doc('dHakAIFWpGRNaOKNg2bb').collection('users'),
+    roomsCollection.doc(mostRecentRoom).collection('users'),
     { idField: 'id' }
   )
-
-//   get all messages in room
+  //   get all messages in room
   const [msgs] = useCollectionData(
-    roomsCollection.doc('dHakAIFWpGRNaOKNg2bb').collection('messages'),
+    roomsCollection.doc(mostRecentRoom).collection('messages'),
     { idField: 'id' }
   )
 
-  console.log(users, msgs)
+  console.log(users, msgs, mostRecentRoom)
 
-  const roomsRef = roomsCollection
-    .doc('dHakAIFWpGRNaOKNg2bb')
-    .collection('messages')
-
+  const roomsRef = roomsCollection.doc(mostRecentRoom).collection('messages')
   const roomsQuery = roomsRef.orderBy('createdAt').limit(25)
-
   const [messages] = useCollectionData(roomsQuery, { idField: 'id' })
   const [formValue, setFormValue] = useState('')
 
