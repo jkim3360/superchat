@@ -21,6 +21,7 @@ export default function Dashboard() {
         onClick={async () => {
           const docRef = await roomsRef.add({
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            users: [user.uid]
           })
           const docRef2 = await roomsRef.doc()
           const roomId = docRef.id
