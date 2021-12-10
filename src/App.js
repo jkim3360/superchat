@@ -2,7 +2,6 @@ import SignIn from './components/SignIn'
 import SignOut from './components/SignOut'
 import Dashboard from './components/Dashboard'
 import ChatRoom from './components/ChatRoom'
-
 import './App.css'
 
 // import firebase from 'firebase/compat/app';
@@ -23,8 +22,6 @@ firebase.initializeApp({
 })
 
 const auth = firebase.auth()
-const firestore = firebase.firestore()
-var globalRoom
 
 function App() {
   const [user] = useAuthState(auth)
