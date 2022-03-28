@@ -3,6 +3,7 @@ import SignIn from './components/SignIn'
 import SignOut from './components/SignOut'
 import Dashboard from './components/Dashboard'
 import ChatRoom from './components/ChatRoom'
+import close from './assets/close.png'
 import './App.css'
 
 // import firebase from 'firebase/compat/app';
@@ -54,7 +55,8 @@ function App() {
     <div className='App'>
       <header>
         <h1>Chat</h1>
-        <SignOut />
+        {/* <SignOut /> */}
+        <img id='close-btn' src={close} />
       </header>
 
       {/* <Dashboard /> */}

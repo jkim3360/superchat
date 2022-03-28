@@ -107,16 +107,13 @@ button:disabled {
   margin: 0 auto;
 }
 
-
-
-
 ul, li {
   text-align: left;
   list-style: none;
 }
 
 p {
-  max-width: 500px;
+  max-width: 300px;
   margin-bottom: 12px;
   line-height: 24px;
   padding: 10px 20px;
@@ -130,7 +127,6 @@ p {
   display: flex;
   align-items: center;
 }
-
 
 .sent {
   flex-direction: row-reverse;
