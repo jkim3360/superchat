@@ -12,9 +12,7 @@ export default function SignIn() {
       <button className='sign-in' onClick={signInWithGoogle}>
         Sign in with Google
       </button>
-      <p className='warning-message'>
-        Do not violate the community guidelines or you will be banned for life!
-      </p>
+      <p className='warning-message'>Sign in to leave a message.</p>
     </>
   )
 }
