@@ -99,11 +99,14 @@ button:disabled {
   cursor: not-allowed;
 }
 
-
 .sign-in {
   color: #282c34;
   background: white;
   max-width: 400px;
+  margin: 0 auto;
+}
+
+.warning-message {
   margin: 0 auto;
 }
 
