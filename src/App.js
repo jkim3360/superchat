@@ -51,12 +51,22 @@ function App() {
     addUser()
   }, [])
 
+  const closeBtn = () => {
+    window.parent.postMessage(
+      {
+        dest: 'daeho',
+        message: 'close',
+        state: false
+      },
+      '*'
+    )
+  }
   return (
     <div className='App'>
       <header>
         <h1>Chat</h1>
         {/* <SignOut /> */}
-        <img id='close-btn' src={close} />
+        <img className='close-btn' src={close} onClick={() => closeBtn()} />
       </header>
 
       {/* <Dashboard /> */}

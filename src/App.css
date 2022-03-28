@@ -107,6 +107,10 @@ button:disabled {
   margin: 0 auto;
 }
 
+.close-btn:hover {
+  cursor: pointer;
+}
+
 ul, li {
   text-align: left;
   list-style: none;
