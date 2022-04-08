@@ -90,7 +90,7 @@ export default function ChatRoom() {
           placeholder='New Message'
         />
         <button type='submit' disabled={!formValue}>
-          <BiMailSend style={{ fontSize: '2rem' }} />
+          <BiMailSend style={{ fontSize: '1.5rem' }} />
         </button>
       </form>
     </>

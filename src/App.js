@@ -30,10 +30,8 @@ function App() {
   const firestore = firebase.firestore()
   const [user] = useAuthState(auth)
   const usersRef = firestore.collection('users')
-  console.log(user)
 
   const [users] = useCollectionData(usersRef, { idField: 'id' })
-  console.log('users: ', users)
   // user?
   const addUser = async () => {
     try {
