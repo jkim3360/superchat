@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 import ChatMessage from './ChatMessage'
+import { BiMailSend } from 'react-icons/bi'
 
 import firebase from 'firebase/compat/app'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
@@ -29,7 +30,7 @@ export default function ChatRoom() {
   // .then(snapshot => snapshot.docs.forEach(doc => console.log('snap shot: ',doc.data())))
 
   const mostRecentRoom = rooms && rooms[rooms.length - 1].id
-  
+
   //   get all users in room
   const [users] = useCollectionData(
     roomsCollection
@@ -89,7 +90,7 @@ export default function ChatRoom() {
           placeholder='New Message'
         />
         <button type='submit' disabled={!formValue}>
-          🕊️
+          <BiMailSend style={{ fontSize: '2rem' }} />
         </button>
       </form>
     </>
